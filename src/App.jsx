@@ -14,7 +14,7 @@ function App() {
   const[x,setX]=useState([x1,x2,x3])
   const[o,setO]=useState([o1,o2,o3])
   const[end,setEnd]=useState(false)
-  const[users,setUsers]= useState(1)
+  const[users,setUsers]= useState(2)
   const[userStarted,setUserStarted] = useState(true)
   
 
@@ -92,7 +92,6 @@ function App() {
 
   useEffect(()=>{
     let num = check(cells)
-    console.log(num);
     setLineNum(num.cross)
   },[cells])
 
@@ -152,8 +151,10 @@ function App() {
 
 
   const check2=(dummy,n)=>{
+    console.log("-------------------------------------");
     for(let i =1;i<4;i++){
       let sum=dummy.filter(item=>item.col==i).map(item=>item.value).reduce((a,b)=>a+b,0)
+      console.log("sum =",sum,"col =",i,"eqaul =",n);
       if(sum==n){
         if(dummy.filter(item=>item.col==i).find(item=>!item.input)){
           return dummy.filter(item=>item.col==i).find(item=>!item.input)
@@ -162,6 +163,7 @@ function App() {
     }
     for(let i =1;i<4;i++){
       let sum=dummy.filter(item=>item.row==i).map(item=>item.value).reduce((a,b)=>a+b,0)
+      console.log("sum =",sum,"row =",i,"eqaul =",n);
       if(sum==n){
         if(dummy.filter(item=>item.row==i).find(item=>!item.input)){
           return dummy.filter(item=>item.row==i).find(item=>!item.input)
@@ -169,7 +171,9 @@ function App() {
       }
     }
     let sum3 = dummy.filter(item=>item.dia1==true).map(item=>item.value).reduce((a,b)=>a+b,0)
+    console.log("sum =",sum3,"dia =",1,"eqaul =",n);
     let sum2 = dummy.filter(item=>item.dia2==true).map(item=>item.value).reduce((a,b)=>a+b,0)
+    console.log("sum =",sum2,"dia =",2,"eqaul =",n);
 
     if(sum2==n){
       if(dummy.filter(item=>item.dia2==true).find(item=>!item.input)){
@@ -188,6 +192,7 @@ function App() {
 
 
   const auto = (dummyCells)=> {
+    console.log("**********************************************************");
     let num
     if (userStarted) {
       num = -2
@@ -235,6 +240,7 @@ function App() {
 
 
   const restart = ()=>{
+    setUserStarted(true)
     let dummyCells = []
       for(let i=0;i<9;i++){
         dummyCells.push({cell:i,input:false,value:0})
@@ -296,6 +302,7 @@ function App() {
       }
     }
     setCells(dummyCells)
+    setEnd(false)
   }
 
 
@@ -329,13 +336,20 @@ function App() {
   const [lineNum,setLineNum]=useState(8)
 
 
+  const userChange = () =>{
+    users==1?setUsers(2):setUsers(1)
+  }
+
   useEffect(()=>{
     restart()
-  },[])
+  },[users])
 
   return (
     <div className='main d-flex justify-content-center align-items-center'>
+      <div className="button">
       <button onClick={restart}>restart</button>
+      <button onClick={userChange}>{users==1?<i className="fa-solid fa-robot"></i>:<i className="fa-solid fa-user-group"></i>}</button>
+      </div>
       <div className="div shadow-lg rounded position-relative">
         {
           lines[lineNum]
