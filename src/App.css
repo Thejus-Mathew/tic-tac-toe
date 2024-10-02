@@ -1,0 +1,76 @@
+.main{
+    background-image: url("../public/tic-tac-toe-seamless-background-on-dark-blue-illustration-vector.jpg");
+    background-position: center;
+    height: 100vh;
+    width: 100vw;
+}
+.div{
+    width: 30vw;
+    min-width: 350px;
+    aspect-ratio: 1/1;
+    backdrop-filter: blur(12px);
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 5px white solid;
+}
+.rows1{
+    margin-top: 8%;
+    height: 24%;
+}
+.rows2{
+    height: 27%;
+}
+.rows3{
+    height: 28%;
+}
+.rows{
+    display: flex;
+}
+.cell{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+.cell1{
+    width: 22%;
+    margin-left: 12%;
+}
+.cell2{
+    width: 27%;
+}
+.cell3{
+    width: 25%;
+}
+.cell4{
+    margin-left: 12%;
+    width: 22%;
+}
+.cell5{
+    width: 25%;
+}
+.cell6{
+    width: 27%;
+}
+.cell7{
+    margin-left: 12%;
+    width: 20.5%;
+}
+.cell8{
+    width: 23.5%;
+}
+.cell9{
+    width: 30%;
+}
+.cell button{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+}
+button img{
+    filter: brightness(0%)invert(1);
+    padding: 10px;
+}
+.wsdfsf{
+    transform: rotate(90deg);
+}
