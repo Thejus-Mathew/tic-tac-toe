@@ -17,7 +17,7 @@ function App() {
   const [o, setO] = useState(() => [o1, o2, o3].sort(() => Math.random() - 0.5));
 
   const[end,setEnd]=useState(false)
-  const[users,setUsers]= useState(2)
+  const[users,setUsers]= useState(1)
   const[userStarted,setUserStarted] = useState(true)
   const[result,setResult] = useState(0)
   
