@@ -78,3 +78,20 @@ button img{
     position: relative;
     z-index: 3;
 }
+
+.ui{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 700px;
+    align-items: center;
+}
+.users{
+    background-color: black;
+}
+.result{
+    backdrop-filter: blur(12px);
+    background-color: rgba(0, 0, 0, 0.2);
+    color: white;
+    width: 400px;
+}

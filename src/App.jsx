@@ -9,6 +9,7 @@ import o3 from '../public/o3.png'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import line from '../public/line.png'
+import { Button, ButtonGroup } from 'react-bootstrap'
 
 function App() {
 
@@ -376,11 +377,22 @@ function App() {
   },[users])
 
   return (
-    <div className='main d-flex justify-content-center align-items-center'>
-      <div className="button">
+    <div className='main d-flex justify-content-center align-items-center position-relative'>
+      <div className="ui position-absolute" style={{height:"100%",width:"100%"}}>
+        <div className="rounded rounded-4 users p-3">
+        <ButtonGroup size="lg" className="mb-2">
+          <Button className='m-0' variant="info" disabled={users==1?true:false} onClick={userChange}><i className="fa-solid fa-robot mx-4 my-2"></i></Button>
+          <Button className='m-0' variant="info" disabled={users==2?true:false} onClick={userChange}><i className="fa-solid fa-user-group mx-4 my-2"></i></Button>
+        </ButtonGroup>
+        </div>
+        <div className="result">
+          hehe
+        </div>
+      </div>
+      {/* <div className="button">
       <button onClick={restart}>restart</button>
       <button onClick={userChange}>{users==1?<i className="fa-solid fa-robot"></i>:<i className="fa-solid fa-user-group"></i>}</button>
-      </div>
+      </div> */}
       <div className="div shadow-lg rounded position-relative">
         {
           lines[lineNum]
