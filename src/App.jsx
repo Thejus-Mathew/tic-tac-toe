@@ -11,8 +11,10 @@ import { useEffect } from 'react'
 import line from '../public/line.png'
 
 function App() {
-  const[x,setX]=useState([x1,x2,x3])
-  const[o,setO]=useState([o1,o2,o3])
+
+  const [x, setX] = useState(() => [x1, x2, x3].sort(() => Math.random() - 0.5));
+  const [o, setO] = useState(() => [o1, o2, o3].sort(() => Math.random() - 0.5));
+
   const[end,setEnd]=useState(false)
   const[users,setUsers]= useState(2)
   const[userStarted,setUserStarted] = useState(true)
@@ -57,6 +59,11 @@ function App() {
         dummyCells[i].dia1=true
         dummyCells[i].dia2=true
       }
+      if(i==0 || i==2 || i==6 || i==8){
+        dummyCells[i].corner = true
+      }else{
+        dummyCells[i].corner = false
+      }
     }
     return dummyCells
   })
@@ -80,7 +87,7 @@ function App() {
 
 
     if(check(dummyCells).user==0){
-      users==1? auto(dummyCells):null
+      users==1? setTimeout(()=>{auto(dummyCells)},400):null
     }
     }
 
@@ -93,6 +100,7 @@ function App() {
   useEffect(()=>{
     let num = check(cells)
     setLineNum(num.cross)
+    // console.log(cells);
   },[cells])
 
 
@@ -151,10 +159,10 @@ function App() {
 
 
   const check2=(dummy,n)=>{
-    console.log("-------------------------------------");
+    // console.log("-------------------------------------");
     for(let i =1;i<4;i++){
       let sum=dummy.filter(item=>item.col==i).map(item=>item.value).reduce((a,b)=>a+b,0)
-      console.log("sum =",sum,"col =",i,"eqaul =",n);
+      // console.log("sum =",sum,"col =",i,"eqaul =",n);
       if(sum==n){
         if(dummy.filter(item=>item.col==i).find(item=>!item.input)){
           return dummy.filter(item=>item.col==i).find(item=>!item.input)
@@ -163,7 +171,7 @@ function App() {
     }
     for(let i =1;i<4;i++){
       let sum=dummy.filter(item=>item.row==i).map(item=>item.value).reduce((a,b)=>a+b,0)
-      console.log("sum =",sum,"row =",i,"eqaul =",n);
+      // console.log("sum =",sum,"row =",i,"eqaul =",n);
       if(sum==n){
         if(dummy.filter(item=>item.row==i).find(item=>!item.input)){
           return dummy.filter(item=>item.row==i).find(item=>!item.input)
@@ -171,9 +179,9 @@ function App() {
       }
     }
     let sum3 = dummy.filter(item=>item.dia1==true).map(item=>item.value).reduce((a,b)=>a+b,0)
-    console.log("sum =",sum3,"dia =",1,"eqaul =",n);
+    // console.log("sum =",sum3,"dia =",1,"eqaul =",n);
     let sum2 = dummy.filter(item=>item.dia2==true).map(item=>item.value).reduce((a,b)=>a+b,0)
-    console.log("sum =",sum2,"dia =",2,"eqaul =",n);
+    // console.log("sum =",sum2,"dia =",2,"eqaul =",n);
 
     if(sum2==n){
       if(dummy.filter(item=>item.dia2==true).find(item=>!item.input)){
@@ -192,7 +200,6 @@ function App() {
 
 
   const auto = (dummyCells)=> {
-    console.log("**********************************************************");
     let num
     if (userStarted) {
       num = -2
@@ -211,6 +218,20 @@ function App() {
     }
     else if(check2(dummyCells,-num)){
       let key2 = check2(dummyCells,-num).cell
+      dummyCells = dummyCells.map(item=>
+        item.cell==key2?
+        dummyCells.map(item=>item.value).reduce((a,b)=>a+b,0)==0?
+        {...item,value:1,input:true}
+        :{...item,value:-1,input:true}
+        :item
+      )
+    }
+    else if(dummyCells.filter(item=>item.corner).find(item=>!item.input)){
+      let dummycell2 = dummyCells.filter(item=>item.corner && !item.input)
+      let key2 = dummycell2[Math.floor(Math.random()*dummycell2.length)].cell
+      if(!dummyCells[4].input){
+        key2 = 4
+      }
       dummyCells = dummyCells.map(item=>
         item.cell==key2?
         dummyCells.map(item=>item.value).reduce((a,b)=>a+b,0)==0?
@@ -241,6 +262,8 @@ function App() {
 
   const restart = ()=>{
     setUserStarted(true)
+    setX(() => [x1, x2, x3].sort(() => Math.random() - 0.5));
+    setO(() => [o1, o2, o3].sort(() => Math.random() - 0.5));
     let dummyCells = []
       for(let i=0;i<9;i++){
         dummyCells.push({cell:i,input:false,value:0})
@@ -278,9 +301,12 @@ function App() {
           dummyCells[i].dia1=true
           dummyCells[i].dia2=true
         }
+        if(i==0 || i==2 || i==6 || i==8){
+          dummyCells[i].corner = true
+        }else{
+          dummyCells[i].corner = false
+        }
       }
-
-
 
     if(users==1){
       let start = Math.floor(Math.random()*2)
@@ -333,6 +359,7 @@ function App() {
         </div>,
         <></>
   ])
+
   const [lineNum,setLineNum]=useState(8)
 
 
@@ -360,10 +387,10 @@ function App() {
             <button disabled={cells[0].input || end} onClick={()=>change(0)}>
               {
                 cells[0]?.value==1
-                ?<><img src={x[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} alt="" /></>
+                ?<><img src={x[0]} width={"100%"} height={"100%"} alt="" /></>
                 :cells[0]?.value==-1
-                ?<><img src={o[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} alt="" /></>
-                :<><img src={o[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} style={{opacity:0}} alt="" /></>
+                ?<><img src={o[0]} width={"100%"} height={"100%"} alt="" /></>
+                :<><img src={o[0]} width={"100%"} height={"100%"} style={{opacity:0}} alt="" /></>
               }
             </button>
           </div>
@@ -371,10 +398,10 @@ function App() {
             <button disabled={cells[1].input || end} onClick={()=>change(1)}>
               {
                 cells[1]?.value==1
-                ?<><img src={x[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} alt="" /></>
+                ?<><img src={x[1]} width={"100%"} height={"100%"} alt="" /></>
                 :cells[1]?.value==-1
-                ?<><img src={o[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} alt="" /></>
-                :<><img src={o[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} style={{opacity:0}} alt="" /></>
+                ?<><img src={o[1]} width={"100%"} height={"100%"} alt="" /></>
+                :<><img src={o[1]} width={"100%"} height={"100%"} style={{opacity:0}} alt="" /></>
               }
             </button>
           </div>
@@ -382,10 +409,10 @@ function App() {
             <button disabled={cells[2].input || end} onClick={()=>change(2)}>
               {
                 cells[2]?.value==1
-                ?<><img src={x[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} alt="" /></>
+                ?<><img src={x[2]} width={"100%"} height={"100%"} alt="" /></>
                 :cells[2]?.value==-1
-                ?<><img src={o[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} alt="" /></>
-                :<><img src={o[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} style={{opacity:0}} alt="" /></>
+                ?<><img src={o[2]} width={"100%"} height={"100%"} alt="" /></>
+                :<><img src={o[2]} width={"100%"} height={"100%"} style={{opacity:0}} alt="" /></>
               }
             </button >
           </div>
@@ -395,10 +422,10 @@ function App() {
             <button disabled={cells[3].input || end} onClick={()=>change(3)}>
              {
                 cells[3]?.value==1
-                ?<><img src={x[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} alt="" /></>
+                ?<><img src={x[2]} width={"100%"} height={"100%"} alt="" /></>
                 :cells[3]?.value==-1
-                ?<><img src={o[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} alt="" /></>
-                :<><img src={o[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} style={{opacity:0}} alt="" /></>
+                ?<><img src={o[2]} width={"100%"} height={"100%"} alt="" /></>
+                :<><img src={o[2]} width={"100%"} height={"100%"} style={{opacity:0}} alt="" /></>
               }
             </button>
           </div>
@@ -406,10 +433,10 @@ function App() {
             <button disabled={cells[4].input || end} onClick={()=>change(4)}>
               {
                 cells[4]?.value==1
-                ?<><img src={x[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} alt="" /></>
+                ?<><img src={x[1]} width={"100%"} height={"100%"} alt="" /></>
                 :cells[4]?.value==-1
-                ?<><img src={o[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} alt="" /></>
-                :<><img src={o[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} style={{opacity:0}} alt="" /></>
+                ?<><img src={o[1]} width={"100%"} height={"100%"} alt="" /></>
+                :<><img src={o[1]} width={"100%"} height={"100%"} style={{opacity:0}} alt="" /></>
               }
             </button>
           </div>
@@ -417,10 +444,10 @@ function App() {
             <button disabled={cells[5].input || end} onClick={()=>change(5)}>
               {
                 cells[5]?.value==1
-                ?<><img src={x[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} alt="" /></>
+                ?<><img src={x[0]} width={"100%"} height={"100%"} alt="" /></>
                 :cells[5]?.value==-1
-                ?<><img src={o[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} alt="" /></>
-                :<><img src={o[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} style={{opacity:0}} alt="" /></>
+                ?<><img src={o[0]} width={"100%"} height={"100%"} alt="" /></>
+                :<><img src={o[0]} width={"100%"} height={"100%"} style={{opacity:0}} alt="" /></>
               }
             </button>
           </div>
@@ -430,10 +457,10 @@ function App() {
             <button disabled={cells[6].input || end} onClick={()=>change(6)}>
             {
                 cells[6]?.value==1
-                ?<><img src={x[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} alt="" /></>
+                ?<><img src={x[1]} width={"100%"} height={"100%"} alt="" /></>
                 :cells[6]?.value==-1
-                ?<><img src={o[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} alt="" /></>
-                :<><img src={o[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} style={{opacity:0}} alt="" /></>
+                ?<><img src={o[1]} width={"100%"} height={"100%"} alt="" /></>
+                :<><img src={o[1]} width={"100%"} height={"100%"} style={{opacity:0}} alt="" /></>
               }
             </button>
           </div>
@@ -441,10 +468,10 @@ function App() {
             <button disabled={cells[7].input || end} onClick={()=>change(7)}>
             {
                 cells[7]?.value==1
-                ?<><img src={x[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} alt="" /></>
+                ?<><img src={x[2]} width={"100%"} height={"100%"} alt="" /></>
                 :cells[7]?.value==-1
-                ?<><img src={o[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} alt="" /></>
-                :<><img src={o[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} style={{opacity:0}} alt="" /></>
+                ?<><img src={o[2]} width={"100%"} height={"100%"} alt="" /></>
+                :<><img src={o[2]} width={"100%"} height={"100%"} style={{opacity:0}} alt="" /></>
               }
             </button>
           </div>
@@ -452,10 +479,10 @@ function App() {
             <button disabled={cells[8].input || end} onClick={()=>change(8)}>
             {
                 cells[8]?.value==1
-                ?<><img src={x[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} alt="" /></>
+                ?<><img src={x[0]} width={"100%"} height={"100%"} alt="" /></>
                 :cells[8]?.value==-1
-                ?<><img src={o[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} alt="" /></>
-                :<><img src={o[Math.floor(Math.random()*3)]} width={"100%"} height={"100%"} style={{opacity:0}} alt="" /></>
+                ?<><img src={o[0]} width={"100%"} height={"100%"} alt="" /></>
+                :<><img src={o[0]} width={"100%"} height={"100%"} style={{opacity:0}} alt="" /></>
               }
             </button>
           </div>
