@@ -19,6 +19,7 @@ function App() {
   const[end,setEnd]=useState(false)
   const[users,setUsers]= useState(2)
   const[userStarted,setUserStarted] = useState(true)
+  const[result,setResult] = useState(0)
   
 
 
@@ -104,7 +105,7 @@ function App() {
   useEffect(()=>{
     let num = check(cells)
     setLineNum(num.cross)
-    // console.log(cells);
+    setResult(num.user)
   },[cells])
 
 
@@ -146,7 +147,7 @@ function App() {
     else if((sum1==-3)||(sum2==-3)){
       setEnd(true)
       if(sum2==-3){
-        return {user:1,cross:7}
+        return {user:2,cross:7}
       }
       return {user:2,cross:6}
     }
@@ -377,22 +378,13 @@ function App() {
   },[users])
 
   return (
-    <div className='main d-flex justify-content-center align-items-center position-relative'>
-      <div className="ui position-absolute" style={{height:"100%",width:"100%"}}>
-        <div className="rounded rounded-4 users p-3">
+    <div className='main d-flex flex-column justify-content-center align-items-center position-relative gap-5'>
+      <div className="rounded rounded-4 users p-3">
         <ButtonGroup size="lg" className="mb-2">
           <Button className='m-0' variant="info" disabled={users==1?true:false} onClick={userChange}><i className="fa-solid fa-robot mx-4 my-2"></i></Button>
           <Button className='m-0' variant="info" disabled={users==2?true:false} onClick={userChange}><i className="fa-solid fa-user-group mx-4 my-2"></i></Button>
         </ButtonGroup>
-        </div>
-        <div className="result">
-          hehe
-        </div>
       </div>
-      {/* <div className="button">
-      <button onClick={restart}>restart</button>
-      <button onClick={userChange}>{users==1?<i className="fa-solid fa-robot"></i>:<i className="fa-solid fa-user-group"></i>}</button>
-      </div> */}
       <div className="div shadow-lg rounded position-relative">
         {
           lines[lineNum]
@@ -503,6 +495,55 @@ function App() {
             </button>
           </div>
         </div>
+      </div>
+      <div className="rounded rounded-4 result p-3 text-info">
+        {
+          users==2?result==0
+          ?<div className='d-flex justify-content-between'>
+              <h4>player 1 : <img src={x1} width={"30px"} alt="" /></h4>
+              <h4>player 2 : <img src={o1} width={"30px"} alt="" /></h4>
+            </div>
+          :result==1
+          ?<div className='d-flex justify-content-between'>
+              <h2>Player 1 Won!!!</h2>
+              <Button variant='info' onClick={restart}>Restart</Button>
+            </div>
+          :result==2
+          ?<div className='d-flex justify-content-between'>
+              <h2>Player 2 Won!!!</h2>
+              <Button variant='info' onClick={restart}>Restart</Button>
+            </div>
+          :<div className='d-flex justify-content-between'>
+              <h2>Draw!!!</h2>
+              <Button variant='info' onClick={restart}>Restart</Button>
+            </div>
+          :result==1
+          ?userStarted
+          ?<div className='d-flex justify-content-between'>
+              <h2>You Won!!!</h2>
+              <Button variant='info' onClick={restart}>Restart</Button>
+           </div>
+          :<div className='d-flex justify-content-between'>
+              <h2>You Lost!!!</h2>
+              <Button variant='info' onClick={restart}>Restart</Button>
+           </div>
+          :result==2
+          ?userStarted
+          ?<div className='d-flex justify-content-between'>
+              <h2>You Lost!!!</h2>
+              <Button variant='info' onClick={restart}>Restart</Button>
+           </div>
+          :<div className='d-flex justify-content-between'>
+              <h2>You Won!!!</h2>
+              <Button variant='info' onClick={restart}>Restart</Button>
+           </div>
+          :result==3
+          ?<div className='d-flex justify-content-between'>
+              <h2>Draw!!!</h2>
+              <Button variant='info' onClick={restart}>Restart</Button>
+           </div>
+          :<></>
+        }
       </div>
     </div>
   )

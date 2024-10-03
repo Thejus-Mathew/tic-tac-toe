@@ -79,13 +79,6 @@ button img{
     z-index: 3;
 }
 
-.ui{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 700px;
-    align-items: center;
-}
 .users{
     background-color: black;
 }
@@ -93,5 +86,8 @@ button img{
     backdrop-filter: blur(12px);
     background-color: rgba(0, 0, 0, 0.2);
     color: white;
-    width: 400px;
+    width: 350px;
+}
+.result img{
+    filter: invert(88%) sepia(50%) saturate(170%) hue-rotate(180deg);
 }
