@@ -542,7 +542,15 @@ function App() {
               <h2>Draw!!!</h2>
               <Button variant='info' onClick={restart}>Restart</Button>
            </div>
-          :<></>
+          :userStarted
+          ?<div className='d-flex justify-content-between'>
+              <h4>you : <img src={x1} width={"30px"} alt="" /></h4>
+              <h4>bot : <img src={o1} width={"30px"} alt="" /></h4>
+            </div>
+          :<div className='d-flex justify-content-between'>
+              <h4>bot : <img src={x1} width={"30px"} alt="" /></h4>
+              <h4>you : <img src={o1} width={"30px"} alt="" /></h4>
+            </div>
         }
       </div>
     </div>
