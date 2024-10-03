@@ -74,7 +74,7 @@ function App() {
 
 
   const change = (key) =>{
-    
+    setEnd(true)
     let dummyCells = cells
     dummyCells = dummyCells.map(item=>
       item.cell==key?
@@ -85,9 +85,12 @@ function App() {
     )
     setCells(dummyCells)
 
-
+    
     if(check(dummyCells).user==0){
       users==1? setTimeout(()=>{auto(dummyCells)},400):null
+    }
+    if(check(dummyCells).user==0){
+      setEnd(false)
     }
     }
 
@@ -146,6 +149,7 @@ function App() {
       }
       return {user:2,cross:6}
     }
+    
     return dummy.filter(item=>!item.input).length==0?{user:3,cross:8}:{user:0,cross:8}
   }
 
